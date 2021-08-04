@@ -1,0 +1,70 @@
+{% extends 'header.html' %}
+{% block page_scripts %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-flat.css">
+{% endblock %}
+{% block page_style %}
+
+<style>
+
+input{
+    color: black;
+}
+</style>
+
+{% endblock page_style %}
+{% block content %}
+<div class="w3-container">
+    {% if user.is_authenticated %}
+    <div class="w3-row w3-small w3-content">
+        <div class="w3-card-4">
+            <div class="w3-container w3-padding">
+                <form method="POST">
+                    {% csrf_token %} {% for field in blogform %}
+                    {{field.label_tag}} 
+                    {{ field}} &nbsp;
+                    {% endfor %}
+            </div>
+            <button type='submit' value='Create' class='w3-btn w3-blue-grey' style='width:100%'><i class=' fa fa-send '></i>
+                Create Event</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="w3-wide w3-card w3-padding w3-center w3-content" style="background-color: rgb(40,40,40);">
+        Login to Post
+    </div>
+    {% endif %}
+    <br>
+    {% if posts %}
+        {% for post in posts %}
+        <div class= "w3-half w3-section w3-padding-large">
+            <ul class="w3-ul w3-card-4" style="background-color: rgb(35, 35, 35);">
+                <div class="w3-blue-grey w3-center w3-padding">
+                    {{post.event_name | title}}
+                </div>
+                <li class="w3-padding-large">
+                    <label for="event_type"> Description:</label> {{ post.description }}
+                </li>
+                <li class="w3-padding-large">
+                    <label for="event_type"> Event Type: </label> &nbsp;{{ post.get_type_display| title}}
+                </li>
+                <li class="w3-opacity w3-right-align"><i>
+                    {{post.user.username}} @
+                    {{ post.pub_date }}
+                </i></li>
+            </ul>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+            <img src="https://cdn.shopify.com/s/files/1/1061/1924/products/Sad_Face_Emoji_large.png?v=1480481055" alt="sadface" class="w3-left w3-circle w3-margin-right" style="width:60px">
+            <h4>No posts to display :(  </h4><br>
+            <hr class="w3-clear">
+            <a href="{% url 'home' %}">
+                <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom" style='width:100%'><i class="fa fa-home"></i>  Return Home </button>
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

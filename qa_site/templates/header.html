@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+     <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #user_icon{
+                height:30px;
+                width:30px;
+                border-radius: 50%;
+            }
+        </style>
+    {% block page_scripts %}
+    {% endblock %}
+    {% block page_style %}
+    {% endblock %}
+</head>
+
+<body style="background-image: url('https://4kwallpapers.com/images/wallpapers/macos-big-sur-apple-layers-fluidic-colorful-dark-wwdc-2020-2560x1440-1432.jpg')");' class="w3-text-white">
+    <nav class="navbar navbar-inverse w3-round-xlarge w3-black">
+        <div class="container-fluid">
+            <div class="navbar-header ">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand w3-arial" href="{% url 'home'%}"><i class='fa fa-assistive-listening-systems'></i> BridG </a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-users"></i>
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% for school in schools %}
+                            <li><a href="/faculty/{{school.lower}}"> {{school}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <!--href="{% url 'profile' %}?next={{request.path}}"-->
+                    <li class="inactive"><a href="{% url 'events' %}"> <i class="fa fa-clock "></i> </a></li>
+                    <li class="inactive"><a href="{% url 'forums' %}"> <i class='fa fa-bullhorn' > </i></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        {% if user.is_authenticated %}
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{request.user.username}}
+                        {% if details.dp %}
+                            <img id="user_icon" src="{{details.dp.url}}">
+                       {% else %}
+                       <img id = "user_icon" src =" {% static 'default.png' %} ">
+                        {% endif %}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'profile' %}?next={{request.path}}"><span class="fa fa-id-card"></span>
+                                    About Me </a></li>
+                            <li><a href="{% url 'logout' %}"><span class="fas fa-power-off"></span> Log Out
+                                </a></li>
+                        </ul>
+                        {% else %}
+                        <a class="dropdown-toggle w3-arial" href="{% url 'login' %}?next={{request.path}}">Log In
+                        </a>
+                        {% endif %}
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        {% block post_nav %}
+        {% endblock %}
+    </nav>
+    <div id="w3-container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <footer class="w3-container w3-small w3-bottom" style=" backdrop-filter: blur(8px);">
+        <p><div class="w3-centre-align">
+            Copyright ©BridG 2021. All rights Reserved to Akilesh S</p>
+        </div>
+    </footer>
+</body>
+
+</html>
